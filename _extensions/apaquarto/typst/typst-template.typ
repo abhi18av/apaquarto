@@ -4,23 +4,21 @@
 #let appendixcounter = counter("appendix")
 // make latex logo
 // https://github.com/typst/typst/discussions/1732#discussioncomment-6566999
-#let TeX = style(styles => {
-  set text(font: ("New Computer Modern", "Times", "Times New Roman"))
-  let e = measure("E", styles)
-  let T = "T"
-  let E = text(1em, baseline: e.height * 0.31, "E")
-  let X = "X"
-  box(T + h(-0.15em) + E + h(-0.125em) + X)
-})
-#let LaTeX = style(styles => {
-  set text(font: ("New Computer Modern", "Times", "Times New Roman"))
-  let a-size = 0.66em
-  let l = measure("L", styles)
-  let a = measure(text(a-size, "A"), styles)
-  let L = "L"
-  let A = box(scale(x: 105%, text(a-size, baseline: a.height - l.height, "A")))
-  box(L + h(-a.width * 0.67) + A + h(-a.width * 0.25) + TeX)
-})
+// NOTE: @abhi18av Maybe this can be (i) refactored to use metalogo package or (ii) deleted entirely.
+#let TeX = {
+  set text(font: "New Computer Modern", "Times", "Times New Roman")
+  let t = "T"
+  let e = text(baseline: 0.22em, "E")
+  let x = "X"
+  box(t + h(-0.14em) + e + h(-0.14em) + x)
+}
+
+#let LaTeX = {
+  set text(font: "New Computer Modern", "Times", "Times New Roman")
+  let l = "L"
+  let a = text(baseline: -0.35em, size: 0.66em, "A")
+  box(l + h(-0.32em) + a + h(-0.13em) + TeX)
+}
 
 #let firstlineindent=0.5in
 
