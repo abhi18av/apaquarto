@@ -3,10 +3,9 @@
 // counts how many appendixes there are
 #let appendixcounter = counter("appendix")
 // make latex logo
-// https://github.com/typst/typst/discussions/1732#discussioncomment-6566999
-// NOTE: @abhi18av Maybe this can be (i) refactored to use metalogo package or (ii) deleted entirely.
+// https://github.com/typst/typst/discussions/1732#discussioncomment-11286036
 #let TeX = {
-  set text(font: "New Computer Modern", "Times", "Times New Roman")
+  set text(font: "New Computer Modern",)
   let t = "T"
   let e = text(baseline: 0.22em, "E")
   let x = "X"
@@ -14,13 +13,15 @@
 }
 
 #let LaTeX = {
-  set text(font: "New Computer Modern", "Times", "Times New Roman")
+  set text(font: "New Computer Modern")
   let l = "L"
   let a = text(baseline: -0.35em, size: 0.66em, "A")
   box(l + h(-0.32em) + a + h(-0.13em) + TeX)
 }
 
 #let firstlineindent=0.5in
+
+
 
 // documentmode: man
 #let man(
@@ -46,22 +47,25 @@
     header: grid(
       columns: (9fr, 1fr),
       align(left)[#upper[#runninghead]],
-      align(right)[#counter(page).display()]
+      align(right)[#context counter(page).display()]
+    ),
+    background: rotate(320deg,
+      text(40pt, fill: rgb("CCCCCC"))[
+        *PREPRINT*
+      ]
     )
   )
 
 
- 
-if sys.version.at(1) >= 11 or sys.version.at(0) > 0 {
-  set table(    
+  set table(
     stroke: (x, y) => (
         top: if y <= 1 { 0.5pt } else { 0pt },
         bottom: .5pt,
       )
   )
-}
+
   set par(
-    justify: false, 
+    justify: true,
     leading: leading,
     first-line-indent: firstlineindent
   )
@@ -85,18 +89,19 @@ if sys.version.at(1) >= 11 or sys.version.at(0) > 0 {
   show "LaTeX": LaTeX
 
   // format figure captions
-  show figure.where(kind: "quarto-float-fig"): it => [
+  show figure.where(kind: "quarto-float-fig"): it => block(width: 100%, breakable: false)[
     #if int(appendixcounter.display().at(0)) > 0 [
       #heading(level: 2, outlined: false)[#it.supplement #appendixcounter.display("A")#it.counter.display()]
     ] else [
       #heading(level: 2, outlined: false)[#it.supplement #it.counter.display()]
     ]
-    #par[#emph[#it.caption.body]]
+    #align(left)[#par[#emph[#it.caption.body]]]
     #align(center)[#it.body]
   ]
-  
+
   // format table captions
-  show figure.where(kind: "quarto-float-tbl"): it => [
+  show figure.where(kind: "quarto-float-tbl"): it => block(width: 100%, breakable: false)[#align(left)[
+
     #if int(appendixcounter.display().at(0)) > 0 [
       #heading(level: 2, outlined: false)[#it.supplement #appendixcounter.display("A")#it.counter.display()]
     ] else [
@@ -104,9 +109,9 @@ if sys.version.at(1) >= 11 or sys.version.at(0) > 0 {
     ]
     #par[#emph[#it.caption.body]]
     #block[#it.body]
-  ]
+  ]]
 
- // Redefine headings up to level 5 
+ // Redefine headings up to level 5
   show heading.where(
     level: 1
   ): it => block(width: 100%, below: leading, above: leading)[
@@ -114,7 +119,7 @@ if sys.version.at(1) >= 11 or sys.version.at(0) > 0 {
     #set text(size: fontsize)
     #it.body
   ]
-  
+
   show heading.where(
     level: 2
   ): it => block(width: 100%, below: leading, above: leading)[
@@ -122,7 +127,7 @@ if sys.version.at(1) >= 11 or sys.version.at(0) > 0 {
     #set text(size: fontsize)
     #it.body
   ]
-  
+
   show heading.where(
     level: 3
   ): it => block(width: 100%, below: leading, above: leading)[
