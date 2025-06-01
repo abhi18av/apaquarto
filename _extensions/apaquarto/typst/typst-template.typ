@@ -50,7 +50,7 @@
       align(right)[#context counter(page).display()]
     ),
     background: rotate(320deg,
-      text(40pt, fill: rgb("CCCCCC"))[
+      text(50pt, fill: rgb("CCCCCC"))[
         *PREPRINT*
       ]
     )

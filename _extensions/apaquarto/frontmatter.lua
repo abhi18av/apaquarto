@@ -263,16 +263,22 @@ return {
         if type(meta["draft-date"]) == "table" then
           draftdate = meta["draft-date"]
         end
-        draftdatediv = pandoc.Div({
-            pandoc.Para(draftdate)
-        })
-        draftdatediv.classes:insert("Author")
-        body:extend({draftdatediv})
+        if FORMAT:match 'typst' then
+          body:extend({
+            pandoc.RawBlock('typst', '#align(center)[#text(size: 20pt, fill: rgb("#6A7BA2"), style: \"italic\")[' .. draftdate .. ']]')
+          })
+        else
+          draftdatediv = pandoc.Div({
+              pandoc.Para(draftdate)
+          })
+          draftdatediv.classes:insert("Author")
+          body:extend({draftdatediv})
+        end
       end
 
       local authornoteheadertext = "AUTHOR NOTE"
       if meta.language and meta.language["title-block-author-note"] then
-        authornoteheadertext = meta.language["title-block-author-note"]
+        authornoteheadertext = pandoc.utils.stringify(meta.language["title-block-author-note"]):upper()
       end
 
       local emailword = "Email"
@@ -316,12 +322,12 @@ return {
 
       if byauthor then
         for i, a in ipairs(byauthor) do
-          
+
           if a.orcid then
-            local orcidfile = "_extensions/wjschne/apaquarto/ORCID-iD_icon-vector.svg"
+            local orcidfile = "_extensions/abhi18av/apaquarto/ORCID-iD_icon-vector.svg"
             if not file_exists(orcidfile) then
               orcidfile = "_extensions/apaquarto/ORCID-iD_icon-vector.svg"
-            end 
+            end
             img = pandoc.Image("Orcid ID Logo: A green circle with white letters ID", orcidfile)
             img.attr = pandoc.Attr('orchid', {'img-fluid'},  {width='4.23mm'})
             pp = pandoc.Para(pandoc.Str(""))
