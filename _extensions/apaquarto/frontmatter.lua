@@ -617,12 +617,21 @@ return {
       end
 
       if meta.keywords and not meta["suppress-keywords"] then
-        local keywordsword = pandoc.Str("Keywords")
-        if meta.language and meta.language["title-block-keywords"] then
-          keywordsword = stringify(meta.language["title-block-keywords"])
+        -- Add a new line before keywords
+        body:extend({newline})
+
+        local keywordsword
+        if FORMAT:match 'typst' then
+          -- Bold for typst
+          keywordsword = pandoc.RawInline('typst', '#text[KEYWORDS]')
+        else
+          keywordsword = pandoc.Emph("Keywords")
+          if meta.language and meta.language["title-block-keywords"] then
+            keywordsword = pandoc.Emph(stringify(meta.language["title-block-keywords"]))
+          end
         end
 
-        local keywords_paragraph = pandoc.Para({pandoc.Emph(keywordsword), pandoc.Str(":")})
+        local keywords_paragraph = pandoc.Para({keywordsword, pandoc.Str(":")})
 
         if pandoc.utils.type(meta.keywords) == "Inlines" then
           keywords_paragraph = keywords_paragraph.content:extend(meta.keywords)
