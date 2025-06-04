@@ -54,6 +54,13 @@
         *PREPRINT*
       ]
     )
+//    background: rotate(320deg,
+//      text(30pt, fill: rgb("059bd1"))[
+//        *PUBLISHED*
+//        doi.org/10.1371/journal.pcbi.1011648
+//      ]
+//    )
+
   )
 
 
