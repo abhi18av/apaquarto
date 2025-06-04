@@ -70,6 +70,12 @@
     first-line-indent: firstlineindent
   )
 
+  set par.line(
+    numbering: "1",
+    number-margin: left,
+    number-clearance: 15pt
+  )
+
   // Also "leading" space between paragraphs
   set block(spacing: spacing, above: spacing, below: spacing)
 
