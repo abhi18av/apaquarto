@@ -324,9 +324,9 @@ return {
         for i, a in ipairs(byauthor) do
 
           if a.orcid then
-            local orcidfile = "_extensions/abhi18av/apaquarto/ORCID-iD_icon-vector.svg"
+            local orcidfile = "../_extensions/abhi18av/apaquarto/ORCID-iD_icon-vector.svg"
             if not file_exists(orcidfile) then
-              orcidfile = "_extensions/apaquarto/ORCID-iD_icon-vector.svg"
+              orcidfile = "../_extensions/apaquarto/ORCID-iD_icon-vector.svg"
             end
             img = pandoc.Image("Orcid ID Logo: A green circle with white letters ID", orcidfile)
             img.attr = pandoc.Attr('orchid', {'img-fluid'},  {width='4.23mm'})
